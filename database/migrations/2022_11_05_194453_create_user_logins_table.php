@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('user_logins', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->boolean('is_login');
             $table->timestamps();
