@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal('tax_or_other_cost');
             $table->decimal('discount');
             $table->dateTimeTz('due_date');
-            $table->dateTimeTz('paid_date');
+            $table->dateTimeTz('paid_date')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
