@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('bills', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->string('user_id')->nullable();
-            $table->string('category_id')->nullable();
-            $table->string('name');
+            $table->string('id', 10)->primary();
+            $table->string('user_id', 10)->nullable();
+            $table->string('category_id', 10)->nullable();
+            $table->string('name', 50);
             $table->enum('status', ['paid', 'unpaid']);
             $table->decimal('amount');
             $table->decimal('tax_or_other_cost');

@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('user_logins', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->string('user_id')->nullable();
+            $table->string('id', 10)->primary();
+            $table->string('user_id', 10)->nullable();
             $table->boolean('is_login');
             $table->timestamps();
 
