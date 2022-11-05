@@ -45,4 +45,14 @@ class User extends Authenticatable
     protected $casts = [
         'id' => 'string',
     ];
+
+    public function loginHistory()
+    {
+        return $this->hasMany(UserLogin::class);
+    }
+    
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
 }

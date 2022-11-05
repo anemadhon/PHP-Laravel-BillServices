@@ -16,4 +16,14 @@ class Bill extends Model
     protected $keyType = 'string';
     protected $guarded = [];
     protected $casts = ['id' => 'string'];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

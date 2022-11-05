@@ -14,4 +14,9 @@ class Category extends Model
     protected $keyType = 'string';
     protected $guarded = [];
     protected $casts = ['id' => 'string'];
+
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
+    }
 }

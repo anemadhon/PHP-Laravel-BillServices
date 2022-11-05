@@ -20,4 +20,9 @@ class UserLogin extends Model
         'id' => 'string',
         'is_login' => 'boolean'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
