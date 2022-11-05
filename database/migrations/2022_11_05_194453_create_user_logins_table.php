@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('user_logins', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('user_id')->nullable();
             $table->boolean('is_login');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 

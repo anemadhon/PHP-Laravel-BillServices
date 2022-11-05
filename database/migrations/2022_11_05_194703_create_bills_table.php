@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('user_id')->nullable();
+            $table->string('category_id')->nullable();
             $table->string('name');
             $table->enum('status', ['paid', 'unpaid']);
             $table->decimal('amount');
@@ -25,6 +25,9 @@ return new class extends Migration
             $table->dateTimeTz('due_date');
             $table->dateTimeTz('paid_date');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
+            $table->foreign('category_id')->references('id')->on('categories')->nullOnDelete();
         });
     }
 
