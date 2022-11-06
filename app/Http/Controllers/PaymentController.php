@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TokenRequest;
 use App\Http\Resources\BillResource;
 use App\Models\Bill;
 
@@ -13,7 +14,7 @@ class PaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Bill $payment)
+    public function __invoke(Bill $payment, TokenRequest $token)
     {
         try {
             $payment->update([

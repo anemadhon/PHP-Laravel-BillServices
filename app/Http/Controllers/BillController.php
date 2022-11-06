@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BillRequest;
+use App\Http\Requests\TokenRequest;
 use App\Http\Resources\BillResource;
 use App\Models\Bill;
 use App\Services\BillingServices;
@@ -14,7 +15,7 @@ class BillController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(TokenRequest $token)
     {
         try {
             $myBills = Bill::with(['category:id,name', 'user:id,name'])->paginate(10);
@@ -59,7 +60,7 @@ class BillController extends Controller
      * @param  \App\Models\Bill  $bill
      * @return \Illuminate\Http\Response
      */
-    public function show(Bill $bill)
+    public function show(Bill $bill, TokenRequest $token)
     {
         try {
             $myBill = $bill->load(['category:id,name', 'user:id,name']);
