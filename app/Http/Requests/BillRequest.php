@@ -24,6 +24,7 @@ class BillRequest extends FormRequest
     public function rules()
     {
         return [
+            'token' => ['required', 'string', 'exists:user_logins,id'],
             'user_id' => ['required', 'string', 'exists:users,id'],
             'category_id' => ['required', 'string', 'exists:categories,id'],
             'name' => ['required', 'string', 'min:5', 'max:50'],

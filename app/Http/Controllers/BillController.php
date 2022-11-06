@@ -37,7 +37,7 @@ class BillController extends Controller
     public function store(BillRequest $request, BillingServices $billing)
     {
         try {
-            $myBill = $billing->create($request->validated());
+            $myBill = $billing->create($request->safe()->except('token'));
 
             return response()->json(['data' => [
                 'id' => $myBill['id'],

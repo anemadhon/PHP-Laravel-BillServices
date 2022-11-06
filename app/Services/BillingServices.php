@@ -19,6 +19,10 @@ class BillingServices
             'discount' => $amount['discount']
         ]);
 
+        if (!$bill) {
+            throw new Exception('Internal Error');
+        }
+
         return [
             'id' => $bill->id,
             'status' => $bill->status,
