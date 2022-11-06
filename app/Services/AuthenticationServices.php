@@ -21,12 +21,22 @@ class AuthenticationServices
             abort(401, 'Unauthorized');
         }
 
-        $this->storeToLoginLog($user->id);
+        if ($this->isUserLoggedIn($user->id)) {
+            abort(401, 'Unauthorized, Please Logout to Continue');
+        }
+
+        $token = $this->storeToLoginLog($user->id);
 
         return [
             'id' => $user->id,
-            'name' => $user->name
+            'name' => $user->name,
+            'token' => $token
         ];
+    }
+
+    private function isUserLoggedIn(string $userId)
+    {
+        return UserLogin::where('user_id', $userId)->orderBy('created_at', 'desc')->first()?->is_login;
     }
 
     private function storeToLoginLog(string $id)
@@ -39,15 +49,20 @@ class AuthenticationServices
 
         if (!$loginLog) {
             throw new Exception('Internal Error');
-            
         }
+
+        return $loginLog->id;
     }
 
     public function logout(string $id)
     {
-        $user = User::find($id);
+        $user = UserLogin::find($id);
 
         if (!$user) {
+            abort(401, 'Unauthorized');
+        }
+        
+        if (!$user->is_login) {
             abort(401, 'Unauthorized');
         }
 

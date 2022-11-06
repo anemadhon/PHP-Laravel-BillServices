@@ -13,13 +13,18 @@ class AuthenticationController extends Controller
             $userAuthenticated = $authentication->validate($request->validated());
 
             return response()->json(['data' => [
-                'id' => $userAuthenticated['id'],
-                'name' => $userAuthenticated['name'],
-                'status' => 'authenticated'
+                'user' => [
+                    'id' => $userAuthenticated['id'],
+                    'name' => $userAuthenticated['name']
+                ],
+                'token' => [
+                    'id' => $userAuthenticated['token'],
+                    'status' => 'authenticated'
+                ]
             ]]);
         } catch (\Throwable $th) {
-            $message = (int) $th->getCode() === 401 ? 401 : ($th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage());
-            $code = (int) $th->getCode() === 401 ? 401 : ((int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode());
+            $message = (int) $th->getCode() === 0 ? $th->getMessage() : 'Internal Error';
+            $code = (int) $th->getCode() === 0 ? 401 : 500;
 
             return response()->json(['error' => $message], $code);
         }
@@ -32,8 +37,8 @@ class AuthenticationController extends Controller
 
             return response()->json(status: 204);
         } catch (\Throwable $th) {
-            $message = (int) $th->getCode() === 401 ? 401 : ($th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage());
-            $code = (int) $th->getCode() === 401 ? 401 : ((int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode());
+            $message = (int) $th->getCode() === 0 ? $th->getMessage() : 'Internal Error';
+            $code = (int) $th->getCode() === 0 ? 401 : 500;
 
             return response()->json(['error' => $message], $code);
         }

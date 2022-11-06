@@ -17,12 +17,13 @@ class IsLogin
      */
     public function handle(Request $request, Closure $next)
     {
-        $loggedInUser = UserLogin::where('user_id', $request->user_id)->first();
+        $loggedInUser = UserLogin::find($request->token);
         
         if (!$loggedInUser || ($loggedInUser && !$loggedInUser->is_login)) {
             abort(401, 'Unauthorized');
         }
 
         return $next($request);
+
     }
 }
