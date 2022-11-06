@@ -15,10 +15,10 @@ class BillController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(TokenRequest $token)
+    public function index(TokenRequest $request, BillingServices $billing)
     {
         try {
-            $myBills = Bill::with(['category:id,name', 'user:id,name'])->paginate(10);
+            $myBills = $billing->filterBillsUserId($request->validated());
 
             return BillResource::collection($myBills);
         } catch (\Throwable $th) {
@@ -60,10 +60,10 @@ class BillController extends Controller
      * @param  \App\Models\Bill  $bill
      * @return \Illuminate\Http\Response
      */
-    public function show(Bill $bill, TokenRequest $token)
+    public function show(Bill $bill, TokenRequest $request, BillingServices $billing)
     {
         try {
-            $myBill = $bill->load(['category:id,name', 'user:id,name']);
+            $myBill = $billing->filterBillUserId($request->validated(), $bill);
 
             return BillResource::make($myBill);
         } catch (\Throwable $th) {

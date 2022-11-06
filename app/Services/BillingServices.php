@@ -4,10 +4,18 @@ namespace App\Services;
 
 use App\Models\Bill;
 use App\Models\Category;
+use App\Models\UserLogin;
 use Illuminate\Support\Str;
 
 class BillingServices
 {
+    public function filterBillsUserId(array $payload)
+    {
+        $userLoggedIn = UserLogin::with('user')->find($payload['token']);
+
+        return Bill::with(['category:id,name', 'user:id,name'])->where('user_id', $userLoggedIn->user->id)->paginate(10);
+    }
+
     public function create(array $payload)
     {
         $otherCostOrTax = $this->getOtherCostFromSelectedCategory($payload['category_id']);
@@ -28,6 +36,16 @@ class BillingServices
             'status' => $bill->status,
             'amount_to_pay' => $amount['amount_to_pay'],
         ];
+    }
+
+    public function filterBillUserId(array $payload, Bill $bill)
+    {
+        $userLoggedIn = UserLogin::with('user')->find($payload['token']);
+
+        return $bill->load(['category:id,name', 'user' => function ($query) use ($userLoggedIn)
+        {
+            return $query->find($userLoggedIn->user->id);
+        }]);
     }
 
     private function getOtherCostFromSelectedCategory(string $id)
