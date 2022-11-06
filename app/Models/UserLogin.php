@@ -10,9 +10,6 @@ class UserLogin extends Model
     use HasFactory;
 
     public $incrementing = false;
-
-    const CREATED_AT = 'login_date';
-    const UPDATED_AT = 'logout_date';
     
     protected $keyType = 'string';
     protected $guarded = [];
