@@ -18,8 +18,8 @@ class AuthenticationController extends Controller
                 'status' => 'authenticated'
             ]]);
         } catch (\Throwable $th) {
-            $message = $th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage();
-            $code = (int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode();
+            $message = (int) $th->getCode() === 401 ? 401 : ($th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage());
+            $code = (int) $th->getCode() === 401 ? 401 : ((int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode());
 
             return response()->json(['error' => $message], $code);
         }
@@ -32,10 +32,10 @@ class AuthenticationController extends Controller
 
             return response()->json(status: 204);
         } catch (\Throwable $th) {
-            $message = $th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage();
-            $code = (int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode();
+            $message = (int) $th->getCode() === 401 ? 401 : ($th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage());
+            $code = (int) $th->getCode() === 401 ? 401 : ((int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode());
 
-            return response()->json(['error' => $th->getMessage()], $code);
+            return response()->json(['error' => $message], $code);
         }
     }
 }
