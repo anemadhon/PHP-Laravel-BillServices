@@ -69,7 +69,7 @@ class BillController extends Controller
             $message = $th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage();
             $code = (int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode();
 
-            return response()->json(['error' => $th->getMessage()], $code);
+            return response()->json(['error' => $message], $code);
         }
     }
 }
