@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::apiResource('bills', \App\Http\Controllers\BillController::class)->only(['index', 'show', 'store']);
+Route::put('payments/{payment}', \App\Http\Controllers\PaymentController::class)->name('payments.update');
