@@ -20,13 +20,13 @@ class BillResource extends JsonResource
             'category' => $this->category->name,
             'status' => $this->status,
             'owner' => $this->user->name,
-            'amount' => $this->amount,
-            'tax_or_other_cost' => $this->tax_or_other_cost,
+            'amount' => (int) $this->amount,
+            'tax_or_other_cost' => (int) $this->tax_or_other_cost,
             'discount' => $this->when($this->discount > 0, $this->discount),
-            'amount_paid' => '',
+            'amount_paid' => $this->amount + $this->tax_or_other_cost,
             'due_date' => $this->due_date,
             'paid_date' => $this->paid_date,
-            'created_at' => $this->created_at,
+            'created_at' => date_format($this->created_at, 'Y-m-d H:i:s'),
         ];
     }
 }
