@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BillRequest;
 use App\Http\Resources\BillResource;
 use App\Models\Bill;
-use App\Services\BillingService;
+use App\Services\BillingServices;
 
 class BillController extends Controller
 {
@@ -22,7 +22,7 @@ class BillController extends Controller
             return BillResource::collection($myBills);
         } catch (\Throwable $th) {
             $message = $th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage();
-            $code = $th->getCode() > 500 || $th->getCode() < 200 ? 500 : $th->getCode();
+            $code = (int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode();
 
             return response()->json(['error' => $message], $code);
         }
@@ -34,7 +34,7 @@ class BillController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BillRequest $request, BillingService $billing)
+    public function store(BillRequest $request, BillingServices $billing)
     {
         try {
             $myBill = $billing->create($request->validated());
@@ -47,7 +47,7 @@ class BillController extends Controller
             ]], 201);
         } catch (\Throwable $th) {
             $message = $th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage();
-            $code = $th->getCode() > 500 || $th->getCode() < 200 ? 500 : $th->getCode();
+            $code = (int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode();
 
             return response()->json(['error' => $message], $code);
         }
@@ -64,12 +64,12 @@ class BillController extends Controller
         try {
             $myBill = $bill->load(['category:id,name', 'user:id,name']);
 
-            return BillResource::collection($myBill);
+            return BillResource::make($myBill);
         } catch (\Throwable $th) {
             $message = $th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage();
-            $code = $th->getCode() > 500 || $th->getCode() < 200 ? 500 : $th->getCode();
+            $code = (int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode();
 
-            return response()->json(['error' => $message], $code);
+            return response()->json(['error' => $th->getMessage()], $code);
         }
     }
 }

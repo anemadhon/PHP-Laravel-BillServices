@@ -24,7 +24,7 @@ class PaymentController extends Controller
             return BillResource::make($payment->load(['category:id,name', 'user:id,name']));
         } catch (\Throwable $th) {
             $message = $th->getCode() > 500 || $th->getCode() < 200 ? 'Internal Error' : $th->getMessage();
-            $code = $th->getCode() > 500 || $th->getCode() < 200 ? 500 : $th->getCode();
+            $code = (int) $th->getCode() > 500 || (int) $th->getCode() < 200 ? 500 : (int) $th->getCode();
 
             return response()->json(['error' => $message], $code);
         }
